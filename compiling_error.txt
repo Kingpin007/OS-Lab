@@ -1,9 +1,0 @@
-/home/kingpin007/Documents/Programs/OS-Lab/Shortest-Remainig-Time-First.cpp: In member function ‘void sched::readData()’:
-/home/kingpin007/Documents/Programs/OS-Lab/Shortest-Remainig-Time-First.cpp:23:9: error: name lookup of ‘i’ changed for ISO ‘for’ scoping [-fpermissive]
-     for(i=0;i<n;i++)
-         ^
-/home/kingpin007/Documents/Programs/OS-Lab/Shortest-Remainig-Time-First.cpp:23:9: note: (if you use ‘-fpermissive’ G++ will accept your code)
-/home/kingpin007/Documents/Programs/OS-Lab/Shortest-Remainig-Time-First.cpp: At global scope:
-/home/kingpin007/Documents/Programs/OS-Lab/Shortest-Remainig-Time-First.cpp:134:11: error: ‘::main’ must return ‘int’
- void main()
-           ^
