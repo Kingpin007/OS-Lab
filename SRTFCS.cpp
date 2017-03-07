@@ -60,7 +60,7 @@ public:
           cout<<"Avg Waiting time = "<<(double)totalWaitTime/n<<" and Avg Turnaround time = "<<(double)tTotalArrivalTime/n<<endl;
           cout<<"Scheduling complete\n";
      }
-     int getNextProcess(int time)
+     int getNextProcess(double time)
      {
           int i,low;
           for(i=0;i<n;i++)

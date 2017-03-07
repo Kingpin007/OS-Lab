@@ -40,7 +40,7 @@ public:
                               finish[i]=1;
                          for(int j=0;j<n;j++)
                               if(j!=i && finish[j]==0 && arrivalTime[j]<=time)
-                                   waitTime[j]+=+(ct+dec);
+                                   waitTime[j]+=(ct+dec);
                          time=time+dec+ct;
                          total+=ct;
                     }
