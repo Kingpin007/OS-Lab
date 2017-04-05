@@ -17,7 +17,7 @@ double sectorTime(double t1,double t2)
 
 void FCFS(vector<double> a,vector<double> tr,vector<double> s);
 void SSTF(vector<double> a,vector<double> tr,vector<double> s);
-void LOOK(vector<double> a,vector<double> tr,vector<double> s);
+void SCAN(vector<double> a,vector<double> tr,vector<double> s);
 void CLOOK(vector<double> a,vector<double> tr,vector<double> s);
 void displayTime(double t,vector<double> a,vector<double> tr,vector<double> s,int i);
 
@@ -43,7 +43,7 @@ int main()
 
     int ch;
     do{
-        cout<<"\n\nSchedule using :\n1.FCFS\n2.SSTF\n3.LOOK\n4.C-LOOK\n5.Exit\nEnter Your Choice: ";
+        cout<<"\n\nSchedule using :\n1.FCFS\n2.SSTF\n3.SCAN\n4.C-LOOK\n5.LOOK\n6.Exit\nEnter Your Choice: ";
         cin>>ch;
         switch(ch)
         {
@@ -54,17 +54,20 @@ int main()
             SSTF(a,tr,s);
             break;
         case 3:
-            LOOK(a,tr,s);
+            SCAN(a,tr,s);
             break;
         case 4:
             CLOOK(a,tr,s);
             break;
         case 5:
+            SCAN(a,tr,s);
+            break;
+        case 6:
             break;
         default:
             cout<<"ERROR! Try Again";
         }
-    }while(ch!=5);
+    }while(ch!=6);
     return 0;
 }
 
@@ -158,11 +161,12 @@ void SSTF(vector<double> a,vector<double> tr,vector<double> s)
     cout<<"\nStandard Deviation: "<<sqrt(variance/tr.size())<<endl;
 }
 
-void LOOK(vector<double> a,vector<double> tr,vector<double> s)
+void SCAN(vector<double> a,vector<double> tr,vector<double> s)
 {
     double time = 0;
     double head = 0,headSector=0;
     int next=0;
+    int incr=1;
     vector<double> tarray;
     for(int i=0;i<tr.size();i++)
     {
@@ -178,11 +182,11 @@ void LOOK(vector<double> a,vector<double> tr,vector<double> s)
         a[next]=-1;
         int nxtt=next;
         int nextTime = -1;
-        for(int j=0;j<tr.size();j++)
+        if(incr==1)
         {
-            if(a[j]!=-1)
+            for(int j=0;j<tr.size();j++)
             {
-                if(a[j]<time)
+                if(a[j]!=-1 && a[j]<time && tr[j]>tr[nxtt])
                 {
                     if(nextTime==-1)
                     {
@@ -197,6 +201,29 @@ void LOOK(vector<double> a,vector<double> tr,vector<double> s)
                 }
             }
         }
+        if(nxtt==next)
+            incr=0;
+        if(incr==0)
+        {
+            for(int j=0;j<tr.size();j++)
+            {
+                if(a[j]!=-1 && a[j]<time && tr[j]<tr[nxtt])
+                {
+                    if(nextTime==-1)
+                    {
+                        nextTime=abs(tr[j]-head);
+                        next=j;
+                    }
+                    else if(nextTime>abs(tr[j]-head))
+                    {
+                        nextTime = abs(tr[j]-head);
+                        next=j;
+                    }
+                }
+            }
+        }
+        if(nxtt==next)
+            incr=1;
         tarray.push_back(time);
         if(nxtt==next)
             next++;
@@ -217,8 +244,8 @@ void CLOOK(vector<double> a,vector<double> tr,vector<double> s)
 {
     double time = 0;
     double head = 0,headSector=0;
-    int nexta[]={0,1,5,4,2,3};
-    int next=0,nextc=0;;
+    int next=0;
+    int incr=1;
     vector<double> tarray;
     for(int i=0;i<tr.size();i++)
     {
@@ -231,8 +258,54 @@ void CLOOK(vector<double> a,vector<double> tr,vector<double> s)
         headSector=s[next];
         cout<<"Time after request: "<<next+1<<endl;
         displayTime(time,a,tr,s,next);
-        next = nexta[nextc++];
+        a[next]=-1;
+        int nxtt=next;
+        int nextTime = -1;
+        if(incr==1)
+        {
+            for(int j=0;j<tr.size();j++)
+            {
+                if(a[j]!=-1 && a[j]<time && tr[j]>tr[nxtt])
+                {
+                    if(nextTime==-1)
+                    {
+                        nextTime=abs(tr[j]-head);
+                        next=j;
+                    }
+                    else if(nextTime>abs(tr[j]-head))
+                    {
+                        nextTime = abs(tr[j]-head);
+                        next=j;
+                    }
+                }
+            }
+        }
+        if(nxtt==next)
+            incr=0;
+        if(incr==0)
+        {
+            for(int j=0;j<tr.size();j++)
+            {
+                if(a[j]!=-1 && a[j]<time && tr[j]>0)
+                {
+                    if(nextTime==-1)
+                    {
+                        nextTime=abs(tr[j]-0);
+                        next=j;
+                    }
+                    else if(nextTime>abs(tr[j]-0))
+                    {
+                        nextTime = abs(tr[j]-0);
+                        next=j;
+                    }
+                }
+            }
+        }
+        if(nxtt==next||incr==0)
+            incr=1;
         tarray.push_back(time);
+        if(nxtt==next)
+            next++;
         if(time<a[next])
             time=a[next];
     }
